@@ -1,0 +1,3 @@
+run "pip install opencv-python" in powershell
+copy what is inside of the bin folder
+paste it in C:\Windows
