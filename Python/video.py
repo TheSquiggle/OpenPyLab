@@ -17,11 +17,19 @@ audio_thread.start()
 
 cap = cv2.VideoCapture(video_path)
 
-# Auto-set cols and rows to video resolution
-video_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)/5)
-video_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)/5)
-cols = video_width
-rows = video_height
+# Get video resolution
+video_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+video_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+# Get terminal size
+try:
+    cols_terminal, rows_terminal = os.get_terminal_size()
+except OSError:
+    cols_terminal, rows_terminal = 120, 40  # fallback if can't detect
+
+# Leave some margin for prompt and color codes
+cols = min(video_width, cols_terminal - 4)
+rows = min(video_height, rows_terminal - 4)
 
 fps = cap.get(cv2.CAP_PROP_FPS)
 if fps == 0:
@@ -34,7 +42,7 @@ while cap.isOpened():
     ret, frame = cap.read()
     if not ret:
         break
-    # Resize for terminal (now matches video resolution)
+    # Resize for terminal (auto-fits to terminal size)
     small = cv2.resize(frame, (cols, rows))
     # Convert to grayscale and threshold for ASCII mask
     gray = cv2.cvtColor(small, cv2.COLOR_BGR2GRAY)
@@ -45,11 +53,9 @@ while cap.isOpened():
         line = ""
         for j, pixel in enumerate(row):
             if pixel == 0:
-                # Get color from original frame for black area
                 b, g, r = small[i, j]
                 line += f"\033[38;2;{r};{g};{b}m#"
             else:
-                # Set foreground to white for white area
                 line += "\033[38;2;255;255;255m#"
         line += "\033[0m"
         print(line)
