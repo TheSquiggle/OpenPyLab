@@ -44,19 +44,13 @@ while cap.isOpened():
         break
     # Resize for terminal (auto-fits to terminal size)
     small = cv2.resize(frame, (cols, rows))
-    # Convert to grayscale and threshold for ASCII mask
-    gray = cv2.cvtColor(small, cv2.COLOR_BGR2GRAY)
-    _, bw = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY)
     # Clear terminal
     os.system('cls' if os.name == 'nt' else 'clear')
-    for i, row in enumerate(bw):
+    for i in range(rows):
         line = ""
-        for j, pixel in enumerate(row):
-            if pixel == 0:
-                b, g, r = small[i, j]
-                line += f"\033[38;2;{r};{g};{b}m#"
-            else:
-                line += "\033[38;2;255;255;255m#"
+        for j in range(cols):
+            b, g, r = small[i, j]
+            line += f"\033[38;2;{r};{g};{b}m█"
         line += "\033[0m"
         print(line)
     frame_idx += 1
