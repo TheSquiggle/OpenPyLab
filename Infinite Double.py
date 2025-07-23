@@ -14,4 +14,4 @@ while True: # basically infinite loop
     if color_code > 37: # if the color code exceeds 37, reset it to 31
         color_code = 31 # reset color code to 31
     step = step + 0.1 # increments the step counter
-    time.sleep(1/step) # delay, gets faster each time, so it doesn't take forever to print all the
+    time.sleep(1/step) # delay, gets faster each time
