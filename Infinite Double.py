@@ -10,7 +10,6 @@ step = 0 # initializes the step counter
 while True: # basically infinite loop
     doubled = doubled * 2 # doubles itself
     print(f"\033[{color_code}m{doubled}\033[0m") # prints doubled in a color based on its value
-    color_code += 1 # increments the color code
     color_code = random.randint (1, 100)  # random color code between 1 and 100
     step = step + 1 # increments the step counter
     time.sleep(1/step) # delay, gets faster each time
