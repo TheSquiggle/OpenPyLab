@@ -50,7 +50,7 @@ if fps == 0:
 start_time = time.time()
 frame_idx = 0
 
-render_char = "█"  # Change this to any character you want for rendering
+render_chars = " .:-=+*#%@█"  # From lightest to darkest
 
 while cap.isOpened():
     ret, frame = cap.read()
@@ -58,13 +58,19 @@ while cap.isOpened():
         break
     small = cv2.resize(frame, (cols, rows))
     os.system('cls' if os.name == 'nt' else 'clear')
+    frame_str = ""
     for i in range(rows):
         line = ""
         for j in range(cols):
             b, g, r = small[i, j]
+            # Calculate brightness (perceived luminance)
+            brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b
+            char_idx = int(brightness / 256 * (len(render_chars) - 1))
+            render_char = render_chars[char_idx]
             line += f"\033[38;2;{r};{g};{b}m{render_char}"
-        line += "\033[0m"
-        print(line)
+        line += "\033[0m\n"
+        frame_str += line
+    print(frame_str, end="")
     frame_idx += 1
     target_time = frame_idx / fps
     sleep_time = start_time + target_time - time.time()
