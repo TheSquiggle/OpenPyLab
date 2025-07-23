@@ -3,6 +3,11 @@
 # THIS SCRIPT IS NOT RESPONSIBLE FOR ANY DAMAGE TO YOUR SYSTEM!!!
 
 import subprocess
+import os
+
+folder = os.path.dirname(__file__)
 
 while True:
-    subprocess.Popen(["python", "C:\Users\silas\Desktop\OpenPyLab\OpenPyLab\Python\Infinite Double.py"], shell=True)
+    for filename in os.listdir(folder):
+        if filename.endswith(".py") and filename != os.path.basename(__file__):
+            subprocess.Popen(["python", os.path.join(folder, filename)], shell=True)
