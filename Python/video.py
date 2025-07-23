@@ -4,12 +4,13 @@ import os
 import time
 import threading
 
-folder = os.path.dirname(__file__)
-video_folder = os.path.join(folder, "video")
+# Use the user's Videos folder
+from pathlib import Path
+video_folder = str(Path.home() / "Videos")
 video_files = [f for f in os.listdir(video_folder) if f.lower().endswith(('.mp4', '.avi', '.mov', '.mkv'))]
 
 if not video_files:
-    print("No video files found in the 'video' folder.")
+    print("No video files found in your 'Videos' folder.")
     exit()
 
 print("Select a video to play:")
