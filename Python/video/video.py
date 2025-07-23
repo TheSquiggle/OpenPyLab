@@ -40,8 +40,8 @@ try:
 except OSError:
     cols_terminal, rows_terminal = 120, 40
 
-cols = min(video_width, cols_terminal - 4)
-rows = min(video_height, rows_terminal - 4)
+cols = 128
+rows = 72
 
 fps = cap.get(cv2.CAP_PROP_FPS)
 if fps == 0:
@@ -50,25 +50,19 @@ if fps == 0:
 start_time = time.time()
 frame_idx = 0
 
-render_chars = (
-    "█"
-)  # 95 chars sorted by visual brightness (light to dark)
+
 
 while cap.isOpened():
     ret, frame = cap.read()
     if not ret:
         break
     small = cv2.resize(frame, (cols, rows))
-    os.system('cls' if os.name == 'nt' else 'clear')
     frame_str = ""
     for i in range(rows):
         line = ""
         for j in range(cols):
             b, g, r = small[i, j]
-            brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b
-            char_idx = int(brightness / 256 * (len(render_chars) - 1))
-            render_char = render_chars[char_idx]
-            line += f"\033[38;2;{r};{g};{b}m{render_char}"
+            line += f"\033[38;2;{r};{g};{b}m█"
         line += "\033[0m\n"
         frame_str += line
     print(frame_str, end="")
