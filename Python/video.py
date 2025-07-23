@@ -18,8 +18,8 @@ audio_thread.start()
 cap = cv2.VideoCapture(video_path)
 
 # Auto-set cols and rows to video resolution
-video_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-video_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+video_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)/10)
+video_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)/10)
 cols = video_width
 rows = video_height
 
