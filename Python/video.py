@@ -5,7 +5,7 @@ import time
 import threading
 
 folder = os.path.dirname(__file__)
-video_path = os.path.join(folder, "vid1.mp4")  # Looks in its own folder
+video_path = os.path.join(folder, "video.mp4")  # Looks in its own folder
 
 # Function to play audio using ffplay (must have ffmpeg installed)
 def play_audio(path):
