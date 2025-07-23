@@ -6,6 +6,7 @@ import random # for generating random numbers
 sys.set_int_max_str_digits(999999999) # this is to max out the output size, so I can print a lot of numbers without hitting the limit.
 doubled = 1 # sets the initial value of doubled to 1
 step = 0 # initializes the step counter
+color_code = 0
 
 while True: # basically infinite loop
     doubled = doubled * 2 # doubles itself
