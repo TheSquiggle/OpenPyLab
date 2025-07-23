@@ -5,52 +5,63 @@ import time
 import threading
 
 folder = os.path.dirname(__file__)
-video_path = os.path.join(folder, "video.mp4")  # Looks in its own folder
+video_folder = os.path.join(folder, "video")
+video_files = [f for f in os.listdir(video_folder) if f.lower().endswith(('.mp4', '.avi', '.mov', '.mkv'))]
 
-# Function to play audio using ffplay (must have ffmpeg installed)
+if not video_files:
+    print("No video files found in the 'video' folder.")
+    exit()
+
+print("Select a video to play:")
+for idx, fname in enumerate(video_files):
+    print(f"{idx + 1}: {fname}")
+
+choice = input("Enter the number of the video: ")
+try:
+    video_path = os.path.join(video_folder, video_files[int(choice) - 1])
+except (IndexError, ValueError):
+    print("Invalid selection.")
+    exit()
+
 def play_audio(path):
     os.system(f'ffplay -nodisp -autoexit "{path}"')
 
-# Start audio playback in a separate thread
 audio_thread = threading.Thread(target=play_audio, args=(video_path,), daemon=True)
 audio_thread.start()
 
 cap = cv2.VideoCapture(video_path)
 
-# Get video resolution
 video_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 video_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
-# Get terminal size
 try:
     cols_terminal, rows_terminal = os.get_terminal_size()
 except OSError:
-    cols_terminal, rows_terminal = 120, 40  # fallback if can't detect
+    cols_terminal, rows_terminal = 120, 40
 
-# Leave some margin for prompt and color codes
 cols = min(video_width, cols_terminal - 4)
 rows = min(video_height, rows_terminal - 4)
 
 fps = cap.get(cv2.CAP_PROP_FPS)
 if fps == 0:
-    fps = 30  # fallback if FPS can't be detected
+    fps = 30
 
 start_time = time.time()
 frame_idx = 0
+
+render_char = "█"  # Change this to any character you want for rendering
 
 while cap.isOpened():
     ret, frame = cap.read()
     if not ret:
         break
-    # Resize for terminal (auto-fits to terminal size)
     small = cv2.resize(frame, (cols, rows))
-    # Clear terminal
     os.system('cls' if os.name == 'nt' else 'clear')
     for i in range(rows):
         line = ""
         for j in range(cols):
             b, g, r = small[i, j]
-            line += f"\033[38;2;{r};{g};{b}m█"
+            line += f"\033[38;2;{r};{g};{b}m{render_char}"
         line += "\033[0m"
         print(line)
     frame_idx += 1
@@ -58,5 +69,3 @@ while cap.isOpened():
     sleep_time = start_time + target_time - time.time()
     if sleep_time > 0:
         time.sleep(sleep_time)
-    else:
-        time.sleep(1 / fps)  # fallback to normal frame rate if behind
