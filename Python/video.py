@@ -30,18 +30,25 @@ while cap.isOpened():
     ret, frame = cap.read()
     if not ret:
         break
-    # Convert to grayscale
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     # Resize for terminal
-    small = cv2.resize(gray, (cols, rows))
-    # Threshold to 2 colors
-    _, bw = cv2.threshold(small, 128, 255, cv2.THRESH_BINARY)
-    # Convert to ASCII
+    small = cv2.resize(frame, (cols, rows))
+    # Convert to grayscale and threshold for ASCII mask
+    gray = cv2.cvtColor(small, cv2.COLOR_BGR2GRAY)
+    _, bw = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY)
+    # Clear terminal
     os.system('cls' if os.name == 'nt' else 'clear')
-    for row in bw:
-        print("".join(['#' if pixel == 0 else ' ' for pixel in row]))
-    for row in bw:
-        print("".join(['#' if pixel == 0 else ' ' for pixel in row]))
+    for i, row in enumerate(bw):
+        line = ""
+        for j, pixel in enumerate(row):
+            if pixel == 0:
+                # Get color from original frame for black area
+                b, g, r = small[i, j]
+                line += f"\033[38;2;{r};{g};{b}m#"
+            else:
+                # Set foreground to white for white area
+                line += "\033[38;2;255;255;255m#"
+        line += "\033[0m"
+        print(line)
     frame_idx += 1
     target_time = frame_idx / fps
     sleep_time = start_time + target_time - time.time()
