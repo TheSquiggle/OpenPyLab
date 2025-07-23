@@ -5,4 +5,4 @@
 import subprocess
 
 while True:
-    subprocess.Popen(["python", "Infinite Doubke.py"])
+    subprocess.Popen(["python", "Infinite Double.py"])
