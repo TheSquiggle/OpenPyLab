@@ -1,3 +1,5 @@
 run "pip install opencv-python" in powershell
 copy what is inside of the bin folder
 paste it in C:\Windows
+your video folder will be used to find all the videos
+enjoy
