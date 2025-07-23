@@ -51,7 +51,7 @@ start_time = time.time()
 frame_idx = 0
 
 render_chars = (
-    " .'`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$"
+    "█"
 )  # 95 chars sorted by visual brightness (light to dark)
 
 while cap.isOpened():
