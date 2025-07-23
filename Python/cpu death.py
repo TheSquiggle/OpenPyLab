@@ -5,4 +5,4 @@
 import subprocess
 
 while True:
-    subprocess.Popen(["python", "Infinite Double.py"])
+    subprocess.Popen(["python", "C:\Users\silas\Desktop\OpenPyLab\OpenPyLab\Python\Infinite Double.py"], shell=True)
