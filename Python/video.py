@@ -16,8 +16,12 @@ audio_thread = threading.Thread(target=play_audio, args=(video_path,), daemon=Tr
 audio_thread.start()
 
 cap = cv2.VideoCapture(video_path)
-cols = 80  # Width of ASCII output
-rows = 40  # Height of ASCII output
+
+# Auto-set cols and rows to video resolution
+video_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+video_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+cols = video_width
+rows = video_height
 
 fps = cap.get(cv2.CAP_PROP_FPS)
 if fps == 0:
@@ -30,7 +34,7 @@ while cap.isOpened():
     ret, frame = cap.read()
     if not ret:
         break
-    # Resize for terminal
+    # Resize for terminal (now matches video resolution)
     small = cv2.resize(frame, (cols, rows))
     # Convert to grayscale and threshold for ASCII mask
     gray = cv2.cvtColor(small, cv2.COLOR_BGR2GRAY)
