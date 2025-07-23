@@ -10,10 +10,10 @@ step = 0
 hue = 0.0  # start hue
 
 while True:
-    divide /= 2
     # Convert hue to RGB (values 0-255)
     r, g, b = [int(x * 255) for x in colorsys.hsv_to_rgb(hue, 1, 1)]
     print(f"\033[38;2;{r};{g};{b}m{divide}\033[0m")
+    divide /= 2
     hue += 0.01  # increase hue for next color
     if hue > 1.0:
         hue = 0.0
