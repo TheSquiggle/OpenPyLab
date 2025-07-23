@@ -59,6 +59,7 @@ while cap.isOpened():
     if not ret:
         break
     small = cv2.resize(frame, (cols, rows))
+    os.system('cls' if os.name == 'nt' else 'clear')
     frame_str = ""
     for i in range(rows):
         line = ""
@@ -75,5 +76,4 @@ while cap.isOpened():
     target_time = frame_idx / fps
     sleep_time = start_time + target_time - time.time()
     if sleep_time > 0:
-        sleep_time = 0
         time.sleep(sleep_time)
