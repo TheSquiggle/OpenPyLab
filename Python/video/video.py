@@ -50,20 +50,20 @@ if fps == 0:
 start_time = time.time()
 frame_idx = 0
 
-render_chars = " .:-=+*#%@█"  # From lightest to darkest
+render_chars = (
+    " .'`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$"
+)  # 95 chars sorted by visual brightness (light to dark)
 
 while cap.isOpened():
     ret, frame = cap.read()
     if not ret:
         break
     small = cv2.resize(frame, (cols, rows))
-    os.system('cls' if os.name == 'nt' else 'clear')
     frame_str = ""
     for i in range(rows):
         line = ""
         for j in range(cols):
             b, g, r = small[i, j]
-            # Calculate brightness (perceived luminance)
             brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b
             char_idx = int(brightness / 256 * (len(render_chars) - 1))
             render_char = render_chars[char_idx]
@@ -75,4 +75,5 @@ while cap.isOpened():
     target_time = frame_idx / fps
     sleep_time = start_time + target_time - time.time()
     if sleep_time > 0:
+        sleep_time = 0
         time.sleep(sleep_time)
